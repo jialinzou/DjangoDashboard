@@ -1,8 +1,0 @@
-# auth files
-*.p12
-
-# compiled python file
-*.pyc
-
-# virtual environment folder
-venv
