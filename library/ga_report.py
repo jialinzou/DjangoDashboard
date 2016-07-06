@@ -12,7 +12,7 @@ from oauth2client import tools
 
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
 DISCOVERY_URI = ('https://analyticsreporting.googleapis.com/$discovery/rest')
-KEY_FILE_LOCATION = 'My Project-c86eabc085a6.p12'
+KEY_FILE_LOCATION = 'aws_key.p12'
 SERVICE_ACCOUNT_EMAIL = 'quickstart@erudite-wind-134818.iam.gserviceaccount.com'
 VIEW_ID = '123191441'
 

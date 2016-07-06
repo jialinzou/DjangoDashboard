@@ -36,3 +36,4 @@ class GetDataLine(View):
             response.append(dict(date = model.id.strftime('%Y%m%d%H'), page_views = model.page_views))
         return JsonResponse(response, safe=False)
 
+

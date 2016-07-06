@@ -23,3 +23,7 @@ class Channel(models.Model):
 class PageViewsPerHour(models.Model):
     id = models.DateTimeField(primary_key=True)
     page_views = models.IntegerField()
+    
+class VideoViews(models.Model):
+    id = models.DateTimeField(primary_key=True)
+    video_views = models.IntegerField()
