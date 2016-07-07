@@ -35,20 +35,21 @@ def initialize_analyticsreporting():
   return analytics
 
 
-def get_report(analytics):
+def get_report(analytics, time = 'today'):
   # Use the Analytics Service Object to query the Analytics Reporting API V4.
   return analytics.reports().batchGet(
       body={
         'reportRequests': [
         {
           'viewId': VIEW_ID,
-          'dateRanges': [{'startDate': '1daysAgo', 'endDate': 'today'}
-                        ],
+          'dateRanges': [{'startDate': time, 'endDate': time}],
           'dimensions':[{"name": "ga:date"},
-                        {"name": "ga:hour"},
+                        #{"name": "ga:hour"},
+                        {"name": "ga:channelGrouping"},
                        ],
           'metrics': [
-                      {"expression": "ga:pageviews"},
+                      #{"expression": "ga:pageviews"},
+                      {"expression": "ga:users"},
                       ]
         }]
       }

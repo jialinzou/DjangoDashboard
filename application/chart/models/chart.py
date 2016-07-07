@@ -27,3 +27,13 @@ class PageViewsPerHour(models.Model):
 class VideoViews(models.Model):
     id = models.DateTimeField(primary_key=True)
     video_views = models.IntegerField()
+    
+class UsersPerChannel(models.Model):
+	date = models.DateField(primary_key=True)
+	Other = models.IntegerField()
+	Direct = models.IntegerField()
+	Email = models.IntegerField()
+	Organic_Search = models.IntegerField()
+	Paid_Search = models.IntegerField()
+	Referral = models.IntegerField()
+	Social = models.IntegerField()
