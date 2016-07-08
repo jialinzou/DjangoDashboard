@@ -18,6 +18,11 @@ function pieAndBar(fData){
     fData.forEach(function(d){d.total=d.users.Other+d.users.Direct+d.users.Email+
     				d.users.Organic_Search+d.users.Paid_Search+d.users.Referral+
     				d.users.Social;});
+    /*
+    // parse date
+    fData.forEach(function(d) {
+      d.date = d3.time.format("%Y%m%d").parse(d.date);
+    });*/
     
     // function to handle histogram.
     function histoGram(fD){

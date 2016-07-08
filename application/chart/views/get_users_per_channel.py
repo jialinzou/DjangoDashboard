@@ -6,7 +6,7 @@ from application.chart.models.chart import UsersPerChannel
 class GetUsersPerChannle(View):
     def get(self, request):    
         response = []
-        for model in UsersPerChannel.objects.all():
+        for model in UsersPerChannel.objects.order_by('-date')[:8][::-1]:
             response.append(
             dict(date = model.date.strftime('%Y%m%d'), 
                 users = dict(Other = model.Other,
