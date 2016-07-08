@@ -4,7 +4,7 @@ import datetime
 
 def run():
 	analytics = initialize_analyticsreporting()
-	response = get_report(analytics, '2016-07-06')
+	response = get_report(analytics, '2016-07-07')
 	rows = response['reports'][0]['data']['rows']
 	time = datetime.datetime.strptime(rows[0]['dimensions'][0], '%Y%m%d')
 	users = {'(Other)':0, 'Direct':0, 'Email':0, 'Organic Search':0, 
