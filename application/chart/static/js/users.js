@@ -4,7 +4,8 @@ $( document ).ready(function() {
 
 function pieAndBar(fData){
     id = '.chart_3';
-    console.log(fData);
+    var channels = ["Referral", "Direct", "Social", "Organic_Search", "Paid_Search", "Email", "Other"];
+    //console.log(fData);
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
 								 'Email': '#ff9900',
@@ -72,8 +73,8 @@ function pieAndBar(fData){
         function mouseover(d){  // utility function to be called on mouseover.
             // filter for selected date.
             var st = fData.filter(function(s){ return s.date == d[0];})[0],
-                nD = d3.keys(st.users).map(function(s){ return {type:s, users:st.users[s]};});
-               
+                nD = channels.map(function(s){ return {type:s, users:st.users[s]};});
+            //console.log(nD);   
             // call update functions of pie-chart and legend.    
             pC.update(nD);
             leg.update(nD);
@@ -202,8 +203,7 @@ function pieAndBar(fData){
     }
     
     // calculate total frequency by segment for all date.
-    var tF = ['Other', 'Direct', 'Email', 'Organic_Search', 
-    			'Paid_Search', 'Referral', 'Social'].map(function(d){ 
+    var tF = channels.map(function(d){ 
         return {type:d, users: d3.sum(fData.map(function(t){ return t.users[d];}))}; 
     });    
     
