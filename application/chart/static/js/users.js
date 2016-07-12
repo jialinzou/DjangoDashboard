@@ -36,7 +36,7 @@ function pieAndBar(fData){
             .attr("width", hGDim.w + hGDim.l + hGDim.r)
             .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
-
+			
         // create function for x-axis mapping.
         var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
                 .domain(fD.map(function(d) { return d[0]; }));
@@ -70,24 +70,33 @@ function pieAndBar(fData){
             .attr("y", function(d) { return y(d[1])-5; })
             .attr("text-anchor", "middle");
         
+        //create the title
+        hGsvg.append("text")
+			.attr("x", (hGDim.w / 2))				
+			.attr("y", 0 - (hGDim.t / 2))
+			.attr("text-anchor", "middle")
+			.attr("class", "title")	
+			.style("font-size", "16px") 	
+			.text('Users from All Sources');
+        
         function mouseover(d){  // utility function to be called on mouseover.
             // filter for selected date.
             var st = fData.filter(function(s){ return s.date == d[0];})[0],
                 nD = channels.map(function(s){ return {type:s, users:st.users[s]};});
             //console.log(nD);   
             // call update functions of pie-chart and legend.    
-            pC.update(nD);
+            pC.update(nD, d[0]);
             leg.update(nD);
         }
         
         function mouseout(d){    // utility function to be called on mouseout.
             // reset the pie-chart and legend.    
-            pC.update(tF);
+            pC.update(tF, 'Last 7 Days');
             leg.update(tF);
         }
         
         // create function to update the bars. This will be used by pie-chart.
-        hG.update = function(nD, color){
+        hG.update = function(nD, color, title){
             // update the domain of the y-axis map to reflect change in frequencies.
             y.domain([0, d3.max(nD, function(d) { return d[1]; })]);
             
@@ -100,18 +109,24 @@ function pieAndBar(fData){
                 .attr("height", function(d) { return hGDim.h - y(d[1]); })
                 .attr("fill", color);
 
-            // transition the frequency labels location and change value.
+            // transition the users labels location and change value.
             bars.select("text").transition().duration(500)
                 .text(function(d){ return d3.format(",")(d[1])})
-                .attr("y", function(d) {return y(d[1])-5; });            
+                .attr("y", function(d) {return y(d[1])-5; });   
+            
+            // transition the title    
+            hGsvg.select(".title").transition().duration(500)
+            	.text(title);       
         }        
         return hG;
     }
     
     // function to handle pieChart.
     function pieChart(pD){
-        var pC ={},    pieDim ={w:250, h: 250};
-        pieDim.r = Math.min(pieDim.w, pieDim.h) / 2;
+        var pC ={},    pieDim ={t: 60, r: 0, b: 30, l: 0};
+        pieDim.w = 250 - pieDim.l - pieDim.r, 
+        pieDim.h = 360 - pieDim.t - pieDim.b; 
+        pieDim.r = (Math.min(pieDim.w, pieDim.h) -20) / 2;
                 
         // create svg for pie chart.
         var piesvg = d3.select(id).append("svg")
@@ -129,23 +144,38 @@ function pieAndBar(fData){
             .each(function(d) { this._current = d; })
             .style("fill", function(d) { return segColor(d.data.type); })
             .on("mouseover",mouseover).on("mouseout",mouseout);
-
+		
+		//create the title
+        piesvg.append("text")
+			.attr("x", 0)				
+			.attr("y", -90 - (pieDim.t / 2))
+			.attr("text-anchor", "middle")
+			.attr("class", "title")	
+			.style("font-size", "16px") 	
+			.text('Last 7 Days');
+		
         // create function to update pie-chart. This will be used by histogram.
-        pC.update = function(nD){
+        pC.update = function(nD, title){
             piesvg.selectAll("path").data(pie(nD)).transition().duration(500)
                 .attrTween("d", arcTween);
+            
+            // transition the title    
+            piesvg.select(".title").transition().duration(500)
+            	.text(title);
         }        
         // Utility function to be called on mouseover a pie slice.
         function mouseover(d){
             // call the update function of histogram with new data.
             hG.update(fData.map(function(v){ 
-                return [v.date,v.users[d.data.type]];}),segColor(d.data.type));
+                return [v.date,v.users[d.data.type]];}),
+                segColor(d.data.type), 
+                'Users from '+d.data.type);
         }
         //Utility function to be called on mouseout a pie slice.
         function mouseout(d){
             // call the update function of histogram with all data.
             hG.update(fData.map(function(v){
-                return [v.date,v.total];}), barColor);
+                return [v.date,v.total];}), barColor, 'Users from All Sources');
         }
         // Animating the pie-slice requiring a custom function which specifies
         // how the intermediate paths should be drawn.
