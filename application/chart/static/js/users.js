@@ -1,5 +1,6 @@
 $( document ).ready(function() {
-	d3.json('/chart/get_users_per_channel', pieAndBar);
+    d3.json('/chart/get_users_per_channel', pieAndBar);
+    d3.json('/chart/get_top_pages', table);
 });
 
 function pieAndBar(fData){
@@ -8,17 +9,17 @@ function pieAndBar(fData){
     //console.log(fData);
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
-								 'Email': '#ff9900',
-								 'Organic_Search': '#109618',
-								 'Other': '#3366cc',
-								 'Paid_Search': '#990099',
-								 'Referral': '#0099c6',
-								 'Social': '#dd4477'}[c]; }
+                                 'Email': '#ff9900',
+                                 'Organic_Search': '#109618',
+                                 'Other': '#3366cc',
+                                 'Paid_Search': '#990099',
+                                 'Referral': '#0099c6',
+                                 'Social': '#dd4477'}[c]; }
     
     // compute total for each state.
     fData.forEach(function(d){d.total=d.users.Other+d.users.Direct+d.users.Email+
-    				d.users.Organic_Search+d.users.Paid_Search+d.users.Referral+
-    				d.users.Social;});
+                    d.users.Organic_Search+d.users.Paid_Search+d.users.Referral+
+                    d.users.Social;});
     /*
     // parse date
     fData.forEach(function(d) {
@@ -28,7 +29,7 @@ function pieAndBar(fData){
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 500 - hGDim.l - hGDim.r, 
+        hGDim.w = 400 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
@@ -36,7 +37,7 @@ function pieAndBar(fData){
             .attr("width", hGDim.w + hGDim.l + hGDim.r)
             .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
-			
+            
         // create function for x-axis mapping.
         var x = d3.scale.ordinal().rangeRoundBands([0, hGDim.w], 0.1)
                 .domain(fD.map(function(d) { return d[0]; }));
@@ -72,12 +73,12 @@ function pieAndBar(fData){
         
         //create the title
         hGsvg.append("text")
-			.attr("x", (hGDim.w / 2))				
-			.attr("y", 0 - (hGDim.t / 2))
-			.attr("text-anchor", "middle")
-			.attr("class", "title")	
-			.style("font-size", "16px") 	
-			.text('Users from All Sources');
+            .attr("x", (hGDim.w / 2))                
+            .attr("y", 0 - (hGDim.t / 2))
+            .attr("text-anchor", "middle")
+            .attr("class", "title")    
+            .style("font-size", "16px")     
+            .text('Users from All Sources');
         
         function mouseover(d){  // utility function to be called on mouseover.
             // filter for selected date.
@@ -116,7 +117,7 @@ function pieAndBar(fData){
             
             // transition the title    
             hGsvg.select(".title").transition().duration(500)
-            	.text(title);       
+                .text(title);       
         }        
         return hG;
     }
@@ -144,16 +145,16 @@ function pieAndBar(fData){
             .each(function(d) { this._current = d; })
             .style("fill", function(d) { return segColor(d.data.type); })
             .on("mouseover",mouseover).on("mouseout",mouseout);
-		
-		//create the title
+        
+        //create the title
         piesvg.append("text")
-			.attr("x", 0)				
-			.attr("y", -90 - (pieDim.t / 2))
-			.attr("text-anchor", "middle")
-			.attr("class", "title")	
-			.style("font-size", "16px") 	
-			.text('Last 7 Days');
-		
+            .attr("x", 0)                
+            .attr("y", -90 - (pieDim.t / 2))
+            .attr("text-anchor", "middle")
+            .attr("class", "title")    
+            .style("font-size", "16px")     
+            .text('Last 7 Days');
+        
         // create function to update pie-chart. This will be used by histogram.
         pC.update = function(nD, title){
             piesvg.selectAll("path").data(pie(nD)).transition().duration(500)
@@ -161,7 +162,7 @@ function pieAndBar(fData){
             
             // transition the title    
             piesvg.select(".title").transition().duration(500)
-            	.text(title);
+                .text(title);
         }        
         // Utility function to be called on mouseover a pie slice.
         function mouseover(d){
@@ -200,7 +201,7 @@ function pieAndBar(fData){
         // create the first column for each segment.
         tr.append("td").append("svg").attr("width", '16').attr("height", '16').append("rect")
             .attr("width", '16').attr("height", '16')
-			.attr("fill",function(d){ return segColor(d.type); });
+            .attr("fill",function(d){ return segColor(d.type); });
             
         // create the second column for each segment.
         tr.append("td").text(function(d){ return d.type;});
@@ -236,11 +237,33 @@ function pieAndBar(fData){
     var tF = channels.map(function(d){ 
         return {type:d, users: d3.sum(fData.map(function(t){ return t.users[d];}))}; 
     });    
-    
     // calculate total frequency by date for all segment.
     var sF = fData.map(function(d){return [d.date,d.total];});
 
     var hG = histoGram(sF), // create the histogram.
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
+}
+
+function table(top_pages){
+    console.log(top_pages);       
+    // create table for legend.
+    var legend = d3.select(".chart_1").append("table").attr('class','legend');
+    
+    // create header
+    columns = ["Page Views", "Titles", "Engaged Times"]; 
+    var th = legend.append("thead").selectAll("th").data(columns).enter().append("th");
+    th.append("text").text(function(d){return d});   
+    
+    // create one row per segment.
+    var tr = legend.append("tbody").selectAll("tr").data(top_pages).enter().append("tr");
+        
+    // create the first column for each segment.
+    tr.append("td").text(function(d){ return d3.format(",")(d.Page_views);});
+        
+    // create the second column for each segment.
+    tr.append("td").text(function(d){ return d.Title;});
+
+    // create the third column for each segment.
+    tr.append("td").text(function(d){ return d.Engaged_time;});
 }
