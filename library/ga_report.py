@@ -14,8 +14,6 @@ SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
 DISCOVERY_URI = ('https://analyticsreporting.googleapis.com/$discovery/rest')
 KEY_FILE_LOCATION = 'aws_key.p12'
 SERVICE_ACCOUNT_EMAIL = 'quickstart@erudite-wind-134818.iam.gserviceaccount.com'
-VIEW_ID = '123191441'
-
 
 def initialize_analyticsreporting():
   """Initializes an analyticsreporting service object.
@@ -35,7 +33,7 @@ def initialize_analyticsreporting():
   return analytics
 
 
-def get_report(analytics, time = 'today'):
+def get_report(analytics, VIEW_ID = '116151777', time = 'today'):
   # Use the Analytics Service Object to query the Analytics Reporting API V4.
   return analytics.reports().batchGet(
       body={

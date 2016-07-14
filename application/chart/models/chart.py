@@ -28,8 +28,8 @@ class VideoViews(models.Model):
     id = models.DateTimeField(primary_key=True)
     video_views = models.IntegerField()
     
-class UsersPerChannel(models.Model):
-    date = models.DateField(primary_key=True)
+class UsersPerChannelAndBrand(models.Model):
+    date = models.DateField()
     Other = models.IntegerField()
     Direct = models.IntegerField()
     Email = models.IntegerField()
@@ -37,12 +37,15 @@ class UsersPerChannel(models.Model):
     Paid_Search = models.IntegerField()
     Referral = models.IntegerField()
     Social = models.IntegerField()
+    brand = models.IntegerField() # ga's view id
+    class Meta:
+        unique_together = ('date', 'brand')
     
 class TopPages(models.Model):
     Date = models.DateField()
     Title = models.CharField(max_length=200)
     Engaged_time = models.IntegerField()
-    Page_views = models.IntegerField()
+    Unique_users = models.IntegerField()
     Path = models.CharField(max_length=200)
     
     class Meta:

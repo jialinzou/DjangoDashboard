@@ -13,10 +13,10 @@ def cb_live():
     data = json.loads(response.read().decode("utf8"))
     return data
 
-def get_query_id(metrics = 'page_avg_time,page_views', dimensions = 'dynamic_title,path'):
+def get_query_id(metrics = 'page_avg_time,page_uniques', dimensions = 'dynamic_title,path'):
     endpoint = 'http://chartbeat.com/query/v2/submit/page/'
     requestUrl = endpoint + '?host=' + sites['MH'] + '&apikey=' + cb_key + '&date_range=day' + \
-        '&sort_column=page_views&sort_order=desc&limit=10' + \
+        '&sort_column=page_uniques&sort_order=desc&limit=12' + \
         '&metrics=' + metrics + '&dimensions=' + dimensions
          
     print(requestUrl)

@@ -20,11 +20,13 @@ function pieAndBar(fData){
     fData.forEach(function(d){d.total=d.users.Other+d.users.Direct+d.users.Email+
                     d.users.Organic_Search+d.users.Paid_Search+d.users.Referral+
                     d.users.Social;});
-    /*
+    
     // parse date
+    var parseDate = d3.time.format("%Y%m%d").parse;
+    var format = d3.time.format("%b %d");
     fData.forEach(function(d) {
-      d.date = d3.time.format("%Y%m%d").parse(d.date);
-    });*/
+      d.date = format(parseDate(d.date));
+    });
     
     // function to handle histogram.
     function histoGram(fD){
@@ -246,12 +248,12 @@ function pieAndBar(fData){
 }
 
 function table(top_pages){
-    console.log(top_pages);       
+    //console.log(top_pages);       
     // create table for legend.
     var legend = d3.select(".chart_1").append("table").attr('class','legend');
     
     // create header
-    columns = ["Page Views", "Titles", "Engaged Times"]; 
+    columns = ["Unique Users", "Titles", "Engaged Times"]; 
     var th = legend.append("thead").selectAll("th").data(columns).enter().append("th");
     th.append("text").text(function(d){return d});   
     
@@ -259,7 +261,7 @@ function table(top_pages){
     var tr = legend.append("tbody").selectAll("tr").data(top_pages).enter().append("tr");
         
     // create the first column for each segment.
-    tr.append("td").text(function(d){ return d3.format(",")(d.Page_views);});
+    tr.append("td").text(function(d){ return d3.format(",")(d.Unique_users);});
         
     // create the second column for each segment.
     tr.append("td").text(function(d){ return d.Title;});

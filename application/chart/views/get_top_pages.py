@@ -9,11 +9,11 @@ class GetTopPages(View):
     def get(self, request):
         yesterday = datetime.date.today()-datetime.timedelta(1)    
         response = []
-        for model in TopPages.objects.filter(Date = yesterday).order_by('-Page_views'):
+        for model in TopPages.objects.filter(Date = yesterday).order_by('-Unique_users'):
             response.append(
 				dict(Date = model.Date,
 					Title = model.Title,
-					Page_views = model.Page_views,
+					Unique_users = model.Unique_users,
 					Path = model.Path,
 					Engaged_time = model.Engaged_time))
         print(response)
