@@ -14,7 +14,22 @@
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/chart.css' %}"></link>
     </head>
-    <body>   
+    <body> 
+    <script>
+	  window.fbAsyncInit = function() {
+		FB.init({
+		  xfbml      : true,
+		  version    : 'v2.7'
+		});
+	  }; 
+	  (function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	  }(document, 'script', 'facebook-jssdk'));
+	</script>
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -46,9 +61,13 @@
           <div class="col-md-6">
             <div class="panel panel-info">
               <div class="panel-heading">
-                <h3 class="panel-title">Viral Unique</h3>
+                <h3 class="panel-title">Top social posts based on viral unique</h3>
               </div>
-              <div class="chart_2 panel-body"></div>
+              <div class="chart_2 panel-body">
+				  <div class="fb-post" 
+					  data-href="https://www.facebook.com/MensHealth/posts/10157110231160207" 
+					  data-width="500"></div>  
+              </div>
             </div>
           </div>
         </div>
