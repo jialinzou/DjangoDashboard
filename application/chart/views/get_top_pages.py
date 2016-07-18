@@ -7,7 +7,7 @@ import datetime
 
 class GetTopPages(View):
     def get(self, request):
-        today = datetime.date.today()    
+        today = datetime.date.today()-datetime.timedelta(days=1)   
         response = []
         for model in TopPages.objects.filter(Date = today).order_by('-Unique_users'):
             response.append(

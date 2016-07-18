@@ -37,3 +37,20 @@ def get_top_viral(post_ids, brand):
     viral_list.sort(key = lambda viral:viral['viral_unique'])
     viral_list.reverse()
     return viral_list
+
+def get_post_details(post_id, brand):
+    endpoint = 'https://graph.facebook.com/v2.7/'
+    fields = '?fields=full_picture,permalink_url,message'
+    requestUrl = endpoint + post_id + fields + '&access_token=' + access_token[brand]
+    req = request.Request(requestUrl)
+    response = request.urlopen(req)
+    data = json.loads(response.read().decode("utf8")) 
+    return data
+
+def get_top4_details(viral_list, brand):
+    top4 = []
+    for viral in viral_list[:4]:
+        details = get_post_details(viral['id'],'MH')
+        details['viral_unique'] = viral['viral_unique']
+        top4.append(details)
+    return top4
