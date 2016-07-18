@@ -1,11 +1,15 @@
-from application.chart.models.chart import VideoViews
-from library.fb_report import get_video_views
+from application.chart.models.chart import Top4Posts
+from library.fb_report import get_post_ids, get_top_viral, get_top4_details
 import datetime
 
 def run():
-	response = get_video_views()
-	rows = response['data'][0]['values']
-	for row in rows:
-		time = datetime.datetime.strptime(row['end_time'],'%Y-%m-%dT%H:%M:%S+%f')
-		views = row['value']
-		VideoViews(id = time, video_views = views).save()
+	ids = get_post_ids('MH')
+	virals = get_top_viral(ids, 'MH')
+	top4 = get_top4_details(virals, 'MH')
+	for i, post in enumerate(top4):
+		rank = i+1
+		pic = post['full_picture']
+		message = post['message']
+		viral_unique = post['viral_unique']
+		link = post['permalink_url']
+		Top4Posts(rank = rank, pic = pic, message = message, viral_unique = viral_unique, link = link).save()

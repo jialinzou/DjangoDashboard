@@ -18,3 +18,10 @@ class TopPages(models.Model):
     Path = models.CharField(max_length=200)
     class Meta:
         unique_together = ['Date', 'Title']
+
+class Top4Posts(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    pic = models.CharField(max_length=200)
+    message = models.CharField(max_length=200)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=200)
