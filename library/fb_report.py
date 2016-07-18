@@ -27,4 +27,13 @@ def get_viral_unique(post_id, brand):
     req = request.Request(requestUrl)
     response = request.urlopen(req)
     data = json.loads(response.read().decode("utf8"))    
-    return data
+    return data['data'][0]['values'][0]['value']
+
+def get_top_viral(post_ids, brand):
+    viral_list = []
+    for post in post_ids:
+        viral = get_viral_unique(post['id'], brand)
+        viral_list.append({'id':post['id'], 'viral_unique':viral})
+    viral_list.sort(key = lambda viral:viral['viral_unique'])
+    viral_list.reverse()
+    return viral_list
