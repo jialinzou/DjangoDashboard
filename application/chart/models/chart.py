@@ -21,7 +21,7 @@ class TopPages(models.Model):
 
 class Top4Posts(models.Model):
     rank = models.IntegerField(primary_key = True)
-    pic = models.CharField(max_length=200)
-    message = models.CharField(max_length=200)
+    pic = models.CharField(max_length=400)
+    message = models.CharField(max_length=400)
     viral_unique = models.IntegerField()
-    link = models.CharField(max_length=200)
+    link = models.CharField(max_length=400)

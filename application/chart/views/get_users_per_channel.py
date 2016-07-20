@@ -9,11 +9,11 @@ class GetUsersPerChannle(View):
         for model in UsersPerChannel.objects.order_by('-date')[:8][::-1]:
             response.append(
             dict(date = model.date.strftime('%Y%m%d'), 
-                users = dict(Other = model.Other,
+                users = dict(#Other = model.Other,
                             Direct = model.Direct,
                             Email = model.Email,
-                            Organic_Search = model.Organic_Search,
-                            Paid_Search = model.Paid_Search,
+                            Search = model.Organic_Search,
+                            #Paid_Search = model.Paid_Search,
                             Referral = model.Referral,
                             Social = model.Social)))
         return JsonResponse(response, safe=False)

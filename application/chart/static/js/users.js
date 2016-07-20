@@ -1,24 +1,25 @@
 $( document ).ready(function() {
     d3.json('/chart/get_users_per_channel', pieAndBar);
     d3.json('/chart/get_top_pages', table);
+    $.getJSON('/chart/get_top_posts', postList);
 });
 
 function pieAndBar(fData){
     id = '.chart_3';
-    var channels = ["Referral", "Direct", "Social", "Organic_Search", "Paid_Search", "Email", "Other"];
+    var channels = ["Referral", "Direct", "Social", "Search", "Email"];
     //console.log(fData);
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
                                  'Email': '#ff9900',
-                                 'Organic_Search': '#109618',
-                                 'Other': '#3366cc',
-                                 'Paid_Search': '#990099',
+                                 'Search': '#109618',
+                                 //'Other': '#3366cc',
+                                 //'Paid_Search': '#990099',
                                  'Referral': '#0099c6',
                                  'Social': '#dd4477'}[c]; }
     
     // compute total for each state.
-    fData.forEach(function(d){d.total=d.users.Other+d.users.Direct+d.users.Email+
-                    d.users.Organic_Search+d.users.Paid_Search+d.users.Referral+
+    fData.forEach(function(d){d.total=d.users.Direct+d.users.Email+
+                    d.users.Search+d.users.Referral+
                     d.users.Social;});
     
     // parse date
@@ -31,7 +32,7 @@ function pieAndBar(fData){
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 400 - hGDim.l - hGDim.r, 
+        hGDim.w = 600 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
@@ -268,4 +269,16 @@ function table(top_pages){
 
     // create the third column for each segment.
     tr.append("td").text(function(d){ return d.Engaged_time;});
+}
+
+function postList(top4){
+    console.log(top4);
+    $('.post_1').append('<img src="'+top4[0]['pic']+'" width=240/>')
+        .append(top4[0]['message']).css("font-size", "12");
+    $('.post_2').append('<img src="'+top4[1]['pic']+'" width=240/>')
+        .append(top4[1]['message']).css("font-size", "12");
+    $('.post_3').append('<img src="'+top4[2]['pic']+'" width=240/>')
+        .append(top4[2]['message']).css("font-size", "12");
+    $('.post_4').append('<img src="'+top4[3]['pic']+'" width=240/>')
+        .append(top4[3]['message']).css("font-size", "12");
 }

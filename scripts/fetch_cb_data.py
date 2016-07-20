@@ -10,7 +10,7 @@ def run():
     domain = 'menshealth.com'
     response = get_query(domain, query_ids[domain])
     rows = csv.DictReader(response.split('\r\n'))
-    time = datetime.date.today()-datetime.timedelta(days=1)
+    time = datetime.date.today()#-datetime.timedelta(days=1)
     for row in rows:
         if row['dynamic_title'] == 'Men\'s Health' or row['dynamic_title'] == 'NA':
             continue
