@@ -14,7 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
+print(BASE_DIR)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -53,7 +53,7 @@ MIDDLEWARE_CLASSES = [
 ]
 
 # changed from 'dashboard.urls'
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'dashboard.urls'
 
 TEMPLATES = [
     {
@@ -73,7 +73,7 @@ TEMPLATES = [
 ]
 
 # changed from 'dashboard.wsgi.application'
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'dashboard.wsgi.application'
 
 
 # Database
@@ -145,3 +145,11 @@ STATIC_URL = '/static/'
 STATICFILES_DIR = (
     os.path.join(BASE_DIR, 'application/chart/static')
     )
+
+# CELERY
+BROKER_URL = 'amqp://guest@localhost//'
+CELERY_RESULT_BACKEND = 'amqp'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'US/Eastern'

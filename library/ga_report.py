@@ -12,7 +12,7 @@ from oauth2client import tools
 
 SCOPES = ['https://www.googleapis.com/auth/analytics.readonly']
 DISCOVERY_URI = ('https://analyticsreporting.googleapis.com/$discovery/rest')
-KEY_FILE_LOCATION = 'aws_key.p12'
+KEY_FILE_LOCATION = 'keys/aws_key.p12'
 SERVICE_ACCOUNT_EMAIL = 'quickstart@erudite-wind-134818.iam.gserviceaccount.com'
 
 def initialize_analyticsreporting():
@@ -33,7 +33,7 @@ def initialize_analyticsreporting():
   return analytics
 
 
-def get_report(analytics, VIEW_ID = '116151777', time = 'today'):
+def get_report(analytics, VIEW_ID = '124431303', time = 'today'): # defualt view: rodale network
   # Use the Analytics Service Object to query the Analytics Reporting API V4.
   return analytics.reports().batchGet(
       body={

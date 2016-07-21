@@ -2,7 +2,7 @@ import json
 import datetime as dt
 from urllib import request
 
-access_token = json.load(open("fb_tokens"))
+access_token = json.load(open("keys/fb_tokens"))
 
 def get_post_ids(brand, next_page=None):  
     if next_page:
