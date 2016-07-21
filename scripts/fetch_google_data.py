@@ -5,11 +5,12 @@ import datetime
 def run():
 	view_id = {
 		'apogee': '123191441', #apogee
-		'MH': '116151777' #men's health
+		'MH': '116151777', #men's health
+		'rodale': '124431303' #rodale network
 	}
 	today = str(datetime.date.today())
 	analytics = initialize_analyticsreporting()
-	response = get_report(analytics, view_id['MH'], '2016-07-18')
+	response = get_report(analytics, view_id['rodale'], today)
 	rows = response['reports'][0]['data']['rows']
 	time = datetime.datetime.strptime(rows[0]['dimensions'][0], '%Y%m%d')
 	users = {'(Other)':0, 'Direct':0, 'Email':0, 'Organic Search':0, 
