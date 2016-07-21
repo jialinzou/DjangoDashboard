@@ -35,6 +35,9 @@ body {
   fill: steelblue;
 }
 
+.legendPerc, .legendFreq{
+  text-align: right;
+}
 .bullet { font: 10px sans-serif; }
 .bullet .marker { stroke: #000; stroke-width: 2px; }
 .bullet .axis line, .bullet .axis path { stroke: #666; stroke-width: .5px; fill: none; }

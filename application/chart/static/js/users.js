@@ -32,7 +32,7 @@ function pieAndBar(fData){
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 600 - hGDim.l - hGDim.r, 
+        hGDim.w = 300 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
@@ -272,13 +272,8 @@ function table(top_pages){
 }
 
 function postList(top4){
-    console.log(top4);
-    $('.post_1').append('<img src="'+top4[0]['pic']+'" width=240/>')
-        .append(top4[0]['message']).css("font-size", "12");
-    $('.post_2').append('<img src="'+top4[1]['pic']+'" width=240/>')
-        .append(top4[1]['message']).css("font-size", "12");
-    $('.post_3').append('<img src="'+top4[2]['pic']+'" width=240/>')
-        .append(top4[2]['message']).css("font-size", "12");
-    $('.post_4').append('<img src="'+top4[3]['pic']+'" width=240/>')
-        .append(top4[3]['message']).css("font-size", "12");
+    //console.log(top4);
+    $('#post1 .fb-post').attr('data-href', top4[0]['link']);
+    $('#post2 .fb-post').attr('data-href', top4[1]['link']);
+    $('#post3 .fb-post').attr('data-href', top4[2]['link']);
 }
