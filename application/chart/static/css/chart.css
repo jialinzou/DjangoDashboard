@@ -38,16 +38,6 @@ body {
 .legendPerc, .legendFreq{
   text-align: right;
 }
-.bullet { font: 10px sans-serif; }
-.bullet .marker { stroke: #000; stroke-width: 2px; }
-.bullet .axis line, .bullet .axis path { stroke: #666; stroke-width: .5px; fill: none; }
-.bullet .range.s0 { fill: #eee; }
-.bullet .range.s1 { fill: #ddd; }
-.bullet .range.s2 { fill: #ccc; }
-.bullet .measure.s0 { fill: lightsteelblue; }
-.bullet .measure.s1 { fill: steelblue; }
-.bullet .title { font-size: 14px; font-weight: bold; }
-.bullet .subtitle { fill: #999; }
 
 body{
     width:1060px;
@@ -70,6 +60,7 @@ rect:hover {  fill:blue; }
 .x.axis path {  display: none; }
 .legend{
     margin-bottom:76px;
+    margin-right: 50px;
     display:inline-block;
     border-collapse: collapse;
     border-spacing: 0px;
@@ -81,4 +72,15 @@ rect:hover {  fill:blue; }
 .legendFreq, .legendPerc{
     align:right;
     width:50px;
+}
+
+.concurrents{
+    margin-bottom:42px;
+    display:inline-block;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+.concurrents td{
+    padding:4px 5px;
+    vertical-align:bottom;
 }

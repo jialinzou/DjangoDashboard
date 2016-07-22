@@ -1,6 +1,10 @@
 $( document ).ready(function() {
+    $.currData = [];
     d3.json('/chart/get_users_per_channel', pieAndBar);
-    d3.json('/chart/get_top_pages', table);
+    get_concurrents();
+    setTimeout(setInterval(get_concurrents, 5000), 3000);
+    //d3.json('/chart/get_concurrents', concurrents);
+    //d3.json('/chart/get_top_pages', table);
     $.getJSON('/chart/get_top_posts', postList);
 });
 
@@ -32,7 +36,7 @@ function pieAndBar(fData){
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 300 - hGDim.l - hGDim.r, 
+        hGDim.w = 360 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
@@ -69,7 +73,7 @@ function pieAndBar(fData){
             .on("mouseout",mouseout);// mouseout is defined below.
             
         //Create the users labels above the rectangles.
-        bars.append("text").text(function(d){ return d3.format(",")(d[1])})
+        bars.append("text").text(function(d){ return d3.format(".2s")(d[1])})
             .attr("x", function(d) { return x(d[0])+x.rangeBand()/2; })
             .attr("y", function(d) { return y(d[1])-5; })
             .attr("text-anchor", "middle");
@@ -115,7 +119,7 @@ function pieAndBar(fData){
 
             // transition the users labels location and change value.
             bars.select("text").transition().duration(500)
-                .text(function(d){ return d3.format(",")(d[1])})
+                .text(function(d){ return d3.format(".2s")(d[1])})
                 .attr("y", function(d) {return y(d[1])-5; });   
             
             // transition the title    
@@ -196,7 +200,7 @@ function pieAndBar(fData){
         var leg = {};
             
         // create table for legend.
-        var legend = d3.select(id).append("table").attr('class','legend');
+        var legend = d3.select(id).append("table").attr('class','legend').attr('width', '240');
         
         // create one row per segment.
         var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
@@ -276,4 +280,117 @@ function postList(top4){
     $('#post1 .fb-post').attr('data-href', top4[0]['link']);
     $('#post2 .fb-post').attr('data-href', top4[1]['link']);
     $('#post3 .fb-post').attr('data-href', top4[2]['link']);
+}
+
+function sortByPeoples(a,b){
+    var x = a.peoples;
+    var y = b.peoples;
+    return ((x < y)? 1 : -1);
+}
+function get_concurrents(){
+    console.log('getting');
+    $.currData = [];
+    var domains = {
+        "WH": "womenshealthmag.com",
+        "MH": "menshealth.com",
+        "PVN": "prevention.com",
+        "RW": "runnersworld.com",
+        "BI": "bicycling.com",
+        "ROL": "rodalesorganiclife.com",
+        "WE": "rodalewellness.com"
+    };
+    var url = 'http://api.chartbeat.com/live/quickstats/v4?apikey=7f24fb00da5bb5d913b7cab306f71ead&host=';
+    $.each(domains, function(key, domain){
+        $.get(url+domains[key], function(d){
+            $.currData.push({'site':key, 'peoples':d['data']['stats']['people']});
+            if ($.currData.length === 7){
+                $.currData.sort(sortByPeoples);
+                if($('.concurrents')[0]){  
+                    console.log($.currData);
+                    updatePage($.currData);
+                } else{
+                    concurrents($.currData);
+                    console.log($.currData);
+                }
+            }
+        });
+    });    
+}
+
+function concurrents(cData){
+    var logo = [
+        {'site':'MH', 'link':'http://logonoid.com/images/mens-health-logo.png'},
+        {'site':'WH', 'link':'http://wendywalk.org/wp-content/uploads/2014/10/womens-health-logo.gif'},
+        {'site':'PVN', 'link':'http://www.prevention.com/sites/prevention.com/themes/prevention/logo.png'},      
+        {'site':'RW', 'link':'https://www.circules.com/circulation/natmagsproducts/images/rwnewlogo.gif'},
+        {'site':'BI', 'link':'http://www.bicycling.com/sites/bicycling.com/themes/bicycling/logo.png'},
+        {'site':'ROL', 'link':'http://www.rodalesorganiclife.com/sites/rodalesorganiclife.com/themes/rol/logo.png'},
+        {'site':'WE', 'link':'http://www.rodalewellness.com/sites/rodalewellness.com/themes/wellness/logo.png'}
+    ];
+    
+    //d3.select('chart_3').append('circle').attr('height', 512).attr('width', 512).style('fill', 'url(#image)');
+    var concurrents = d3.select(".chart_3").append("table").attr('class','concurrents');
+    // create patterns
+    var defs = d3.select('.chart_3').append('svg').attr('width', 0).attr('height', 0).append("defs")
+    var pattern = defs.selectAll('pattern').data(logo).enter()
+        .append("pattern")
+        .attr("id", function(d){return 'logo-'+d.site;})
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', 100)
+        .attr('height', 22)
+    pattern.append("image")
+        .attr('width', 100)
+        .attr('height', 22)
+        .attr("xlink:href", function(d){return d.link;});
+
+    // create header
+    columns = ["", "Concurrents"]; 
+    var th = concurrents.append("thead").selectAll("th").data(columns).enter().append("th");
+    th.append("text").text(function(d){return d});   
+    
+    // create one row per segment.
+    var tr = concurrents.append("tbody").selectAll("tr").data(cData).enter().append("tr");
+    
+    // create the first column for each segment.
+    tr.append("td").append("svg").attr("width", '100').attr("height", '22').append("rect")
+        .attr("width", '100').attr("height", '22').attr('class', 'brands')
+        .attr("fill",function(d){ return 'url(#logo-'+d.site+')'; });  
+
+    // create the first column for each segment.
+    //tr.append("td").text(function(d){ return d.site;});
+        
+    // create the second column for each segment.
+    tr.append("td").text(function(d){ return d3.format(",")(d.peoples);}).attr('class', 'peoples').style('text-align', 'right');
+}
+function updatePage(cData){
+    var logo = [
+        {'site':'MH', 'link':'http://logonoid.com/images/mens-health-logo.png'},
+        {'site':'WH', 'link':'http://wendywalk.org/wp-content/uploads/2014/10/womens-health-logo.gif'},
+        {'site':'PVN', 'link':'http://www.prevention.com/sites/prevention.com/themes/prevention/logo.png'},      
+        {'site':'RW', 'link':'https://www.circules.com/circulation/natmagsproducts/images/rwnewlogo.gif'},
+        {'site':'BI', 'link':'http://www.bicycling.com/sites/bicycling.com/themes/bicycling/logo.png'},
+        {'site':'ROL', 'link':'http://www.rodalesorganiclife.com/sites/rodalesorganiclife.com/themes/rol/logo.png'},
+        {'site':'WE', 'link':'http://www.rodalewellness.com/sites/rodalewellness.com/themes/wellness/logo.png'}
+    ];
+    // create patterns
+    var defs = d3.select('.chart_3').append('svg').attr('width', 0).attr('height', 0).append("defs")
+    var pattern = defs.selectAll('pattern').data(logo).enter()
+        .append("pattern")
+        .attr("id", function(d){return 'logo-'+d.site;})
+        .attr('patternUnits', 'userSpaceOnUse')
+        .attr('width', 100)
+        .attr('height', 22)
+    pattern.append("image")
+        .attr('width', 100)
+        .attr('height', 22)
+        .attr("xlink:href", function(d){return d.link;});
+    console.log('updating');
+
+    var peoples = d3.selectAll('.peoples').data(cData);
+    peoples.transition().duration(500)
+        .text(function(d){ return d3.format(",")(d.peoples);}).style('text-align', 'right');
+
+    var brands = d3.selectAll('.brands').data(cData);
+    brands.transition().duration(500)
+        .attr("fill",function(d){ return 'url(#logo-'+d.site+')'; });
 }
