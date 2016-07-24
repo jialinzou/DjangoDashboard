@@ -1,8 +1,8 @@
 $( document ).ready(function() {
     $.currData = [];
-    $.selectID = 1;
-    d3.json('/chart/get_users_per_channel', pieAndBar);
+    get_concurrents();
     setInterval(get_concurrents, 5000);
+    d3.json('/chart/get_users_per_channel', pieAndBar);
     //d3.json('/chart/get_concurrents', concurrents);
     //d3.json('/chart/get_top_pages', table);
     $.getJSON('/chart/get_top_posts', postList);
@@ -88,6 +88,8 @@ function pieAndBar(fData){
         
         function mouseover(d){  // utility function to be called on mouseover.
             clearInterval(disploop);
+            hG.update(fData.map(function(v){
+                return [v.date,v.total];}), barColor, 'Users from All Sources');
             // filter for selected date.
             var st = fData.filter(function(s){ return s.date == d[0];})[0],
                 nD = channels.map(function(s){ return {type:s, users:st.users[s]};});
@@ -266,7 +268,7 @@ function pieAndBar(fData){
         }
     }
     var i = 5;
-    var disploop = setInterval(dispLoop, 30000);
+    var disploop = setInterval(dispLoop, 13000);
 }
 
 function table(top_pages){
