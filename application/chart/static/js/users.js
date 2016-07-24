@@ -1,8 +1,8 @@
 $( document ).ready(function() {
     $.currData = [];
+    $.selectID = 1;
     d3.json('/chart/get_users_per_channel', pieAndBar);
-    get_concurrents();
-    setTimeout(setInterval(get_concurrents, 5000), 3000);
+    setInterval(get_concurrents, 5000);
     //d3.json('/chart/get_concurrents', concurrents);
     //d3.json('/chart/get_top_pages', table);
     $.getJSON('/chart/get_top_posts', postList);
@@ -11,7 +11,6 @@ $( document ).ready(function() {
 function pieAndBar(fData){
     id = '.chart_3';
     var channels = ["Referral", "Direct", "Social", "Search", "Email"];
-    //console.log(fData);
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
                                  'Email': '#ff9900',
@@ -88,6 +87,7 @@ function pieAndBar(fData){
             .text('Users from All Sources');
         
         function mouseover(d){  // utility function to be called on mouseover.
+            clearInterval(disploop);
             // filter for selected date.
             var st = fData.filter(function(s){ return s.date == d[0];})[0],
                 nD = channels.map(function(s){ return {type:s, users:st.users[s]};});
@@ -174,6 +174,7 @@ function pieAndBar(fData){
         // Utility function to be called on mouseover a pie slice.
         function mouseover(d){
             // call the update function of histogram with new data.
+            clearInterval(disploop);
             hG.update(fData.map(function(v){ 
                 return [v.date,v.users[d.data.type]];}),
                 segColor(d.data.type), 
@@ -239,7 +240,7 @@ function pieAndBar(fData){
 
         return leg;
     }
-    
+
     // calculate total frequency by segment for all date.
     var tF = channels.map(function(d){ 
         return {type:d, users: d3.sum(fData.map(function(t){ return t.users[d];}))}; 
@@ -250,6 +251,22 @@ function pieAndBar(fData){
     var hG = histoGram(sF), // create the histogram.
         pC = pieChart(tF), // create the pie-chart.
         leg= legend(tF);  // create the legend.
+    
+    function dispLoop(){
+        if(i == 5){
+            hG.update(fData.map(function(v){
+                return [v.date,v.total];}), barColor, 'Users from All Sources');
+            i = 0;
+        } else {
+            hG.update(fData.map(function(v){ 
+                    return [v.date,v.users[channels[i]]];}),
+                    segColor(channels[i]), 
+                    'Users from '+channels[i]);
+            i++;
+        }
+    }
+    var i = 5;
+    var disploop = setInterval(dispLoop, 30000);
 }
 
 function table(top_pages){
@@ -288,7 +305,6 @@ function sortByPeoples(a,b){
     return ((x < y)? 1 : -1);
 }
 function get_concurrents(){
-    console.log('getting');
     $.currData = [];
     var domains = {
         "WH": "womenshealthmag.com",
@@ -305,12 +321,10 @@ function get_concurrents(){
             $.currData.push({'site':key, 'peoples':d['data']['stats']['people']});
             if ($.currData.length === 7){
                 $.currData.sort(sortByPeoples);
-                if($('.concurrents')[0]){  
-                    console.log($.currData);
+                if($('.concurrents')[0]){
                     updatePage($.currData);
                 } else{
                     concurrents($.currData);
-                    console.log($.currData);
                 }
             }
         });
@@ -384,7 +398,6 @@ function updatePage(cData){
         .attr('width', 100)
         .attr('height', 22)
         .attr("xlink:href", function(d){return d.link;});
-    console.log('updating');
 
     var peoples = d3.selectAll('.peoples').data(cData);
     peoples.transition().duration(500)
