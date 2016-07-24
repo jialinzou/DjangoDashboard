@@ -275,11 +275,11 @@ function table(top_pages){
     tr.append("td").text(function(d){ return d.Engaged_time;});
 }
 
-function postList(top4){
+function postList(top3){
     //console.log(top4);
-    $('#post1 .fb-post').attr('data-href', top4[0]['link']);
-    $('#post2 .fb-post').attr('data-href', top4[1]['link']);
-    $('#post3 .fb-post').attr('data-href', top4[2]['link']);
+    $('#post1 .fb-post').attr('data-href', top3[0]['link']);
+    $('#post2 .fb-post').attr('data-href', top3[1]['link']);
+    $('#post3 .fb-post').attr('data-href', top3[2]['link']);
 }
 
 function sortByPeoples(a,b){

@@ -11,14 +11,14 @@ def get_post_ids(brand, next_page=None):
         last_24h = dt.datetime.now() - dt.timedelta(hours = 24)
         start = str(int((last_24h-dt.datetime(1970,1,1)).total_seconds()))
         endpoint = "https://graph.facebook.com/v2.5/me/posts?"
-        fields = 'id,created_time' 
+        fields = 'id,type,permalink_url' 
         requestUrl = endpoint + 'fields='+fields + "&access_token=" + access_token[brand] + '&since=' + start
     req = request.Request(requestUrl)
     response = request.urlopen(req)
     result = json.loads(response.read().decode("utf8"))
     if 'paging' in result:
         result['data'] += get_post_ids(brand, next_page=result['paging']['next'])
-    return result['data']
+    return list(filter(lambda x: x['type'] == 'link', result['data']))
 
 def get_viral_unique(post_id, brand):
     endpoint = 'https://graph.facebook.com/v2.7/'
@@ -33,10 +33,10 @@ def get_top_viral(post_ids, brand):
     viral_list = []
     for post in post_ids:
         viral = get_viral_unique(post['id'], brand)
-        viral_list.append({'id':post['id'], 'viral_unique':viral})
+        viral_list.append({'id':post['id'], 'viral_unique':viral, 'permalink_url':post['permalink_url']})
     viral_list.sort(key = lambda viral:viral['viral_unique'])
     viral_list.reverse()
-    return viral_list
+    return viral_list[:3]
 
 def get_post_details(post_id, brand):
     endpoint = 'https://graph.facebook.com/v2.7/'

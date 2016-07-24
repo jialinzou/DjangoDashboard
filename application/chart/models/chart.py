@@ -19,9 +19,37 @@ class TopPages(models.Model):
     class Meta:
         unique_together = ['Date', 'Title']
 
-class Top4Posts(models.Model):
+class TopPosts_WH(models.Model):
     rank = models.IntegerField(primary_key = True)
-    pic = models.CharField(max_length=400)
-    message = models.CharField(max_length=400)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_PVN(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_RW(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_BI(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_ROL(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_WE(models.Model):
+    rank = models.IntegerField(primary_key = True)
+    viral_unique = models.IntegerField()
+    link = models.CharField(max_length=400)
+
+class TopPosts_MH(models.Model):
+    rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
     link = models.CharField(max_length=400)
