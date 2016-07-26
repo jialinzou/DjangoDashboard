@@ -1,11 +1,7 @@
 $( document ).ready(function() {
-    $.currData = [];
-    d3.json('/chart/get_users_per_channel', pieAndBar);   
+    $.currData = [];  
     get_concurrents();
     setInterval(get_concurrents, 5000);
-    //d3.json('/chart/get_concurrents', concurrents);
-    //d3.json('/chart/get_top_pages', table);
-    $.getJSON('/chart/get_top_posts', postList);
 });
 
 function pieAndBar(fData){
@@ -378,6 +374,7 @@ function concurrents(cData){
     // create the second column for each segment.
     tr.append("td").text(function(d){ return d3.format(",")(d.peoples);}).attr('class', 'peoples').style('text-align', 'right');
 }
+
 function updatePage(cData){
     var logo = [
         {'site':'MH', 'link':'http://logonoid.com/images/mens-health-logo.png'},

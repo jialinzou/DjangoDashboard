@@ -8,8 +8,8 @@
         <script src="{% static 'js/d3.min.js' %}"></script>
 
         <script src="{% static 'js/common.js' %}"></script>
-        <script src="{% static 'js/network.js' %}"></script>
-
+		<script src="{% static 'js/runnersworld.js' %}"></script>
+		
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"></link>
         <link rel="stylesheet" type="text/css" href="{% static 'css/chart.css' %}"></link>
     </head>
@@ -29,6 +29,7 @@
             fjs.parentNode.insertBefore(js, fjs);
           }(document, 'script', 'facebook-jssdk'));
         </script>
+        
       <nav class="navbar navbar-default">
         <div class="container-fluid">
           <div class="navbar-header">
@@ -45,6 +46,7 @@
           </ul>
         </div>
       </nav>
+      
       <div class="container">
         <div class="panel panel-info">
           <div class="panel-heading">
@@ -52,67 +54,44 @@
           </div>
           <div class="chart_3 panel-body"></div>
         </div>
-        <!--
-        <div class="row">
-          <div class="col-md-6">
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">Top Pages</h3>
-              </div>
-              <div class="chart_1 panel-body"></div>
-            </div>
-          </div>
-          <div class="col-md-6">
-          -->
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">Top Social Posts</h3>
-              </div>
-              <div class="chart_2 panel-body">
-                <div class="row">
-                  <div class="col-md-4">
-                    <div id='post1'>
-                      <div class="fb-post" 
-                          data-href=""
-                          data-width="350"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div id='post2'>
-                      <div class="fb-post" 
-                          data-href=""
-                          data-width="350"></div>
-                    </div>
-                  </div>
-                  <div class="col-md-4">
-                    <div id='post3'>
-                      <div class="fb-post" 
-                          data-href=""
-                          data-width="350"></div>
-                    </div>
-                  </div>
-                </div>
-              </div> 
-            </div>
-
-<!--
-            <div class="panel panel-info">
-              <div class="panel-heading">
-                <h3 class="panel-title">Top Pages</h3>
-              </div>
-              <div class="chart_1 panel-body">
-                
-                <iframe src="https://chartbeat.com/labs/publishing/bigboard/womenshealthmag.com,menshealth.com,runnersworld.com,prevention.com,bicycling.com,rodalesorganiclife.com,rodalewellness.com/?network=true" height="600" 
-                width="1100"></iframe>
-             
-              </div>
-            </div>
- -->
+        
+        <div class="panel panel-info">
+		  <div class="panel-heading">
+			<h3 class="panel-title">Top Social Posts</h3>
+		  </div>
+		  <div class="chart_2 panel-body">
+			<div class="row">
+			  <div class="col-md-4">
+				<div id='post1'>
+				  <div class="fb-post" 
+					  data-href=""
+					  data-width="350"></div>
+				</div>
+			  </div>
+			  <div class="col-md-4">
+				<div id='post2'>
+				  <div class="fb-post" 
+					  data-href=""
+					  data-width="350"></div>
+				</div>
+			  </div>
+			  <div class="col-md-4">
+				<div id='post3'>
+				  <div class="fb-post" 
+					  data-href=""
+					  data-width="350"></div>
+				</div>
+			  </div>
+			</div>
+		  </div> 
+        </div>
       </div> 
+      
       <footer class="footer">
         <div class="container">
           <p class="text-muted">Build by Jialin Zou @2016</p>
         </div>
-      </footer>    
+      </footer> 
+         
     </body>
 </html>
