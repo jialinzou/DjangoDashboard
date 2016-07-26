@@ -1,8 +1,8 @@
 $( document ).ready(function() {
     $.currData = [];
+    d3.json('/chart/get_users_per_channel', pieAndBar);   
     get_concurrents();
     setInterval(get_concurrents, 5000);
-    d3.json('/chart/get_users_per_channel', pieAndBar);
     //d3.json('/chart/get_concurrents', concurrents);
     //d3.json('/chart/get_top_pages', table);
     $.getJSON('/chart/get_top_posts', postList);
@@ -10,7 +10,7 @@ $( document ).ready(function() {
 
 function pieAndBar(fData){
     id = '.chart_3';
-    var channels = ["Referral", "Direct", "Social", "Search", "Email"];
+    var channels = ["Search", "Social", "Direct", "Referral", "Email"];
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
                                  'Email': '#ff9900',
@@ -268,7 +268,7 @@ function pieAndBar(fData){
         }
     }
     var i = 5;
-    var disploop = setInterval(dispLoop, 13000);
+    var disploop = setInterval(dispLoop, 5000);
 }
 
 function table(top_pages){

@@ -22,19 +22,23 @@ def get_post_ids(brand, next_page=None):
 
 def get_viral_unique(post_id, brand):
     endpoint = 'https://graph.facebook.com/v2.7/'
-    fields = '/insights/post_impressions_viral_unique'
+    fields = '/insights/post_impressions_viral_unique,post_impressions_unique'
     requestUrl = endpoint + post_id + fields + '?access_token=' + access_token[brand]
     req = request.Request(requestUrl)
     response = request.urlopen(req)
     data = json.loads(response.read().decode("utf8"))    
-    return data['data'][0]['values'][0]['value']
+    return {data['data'][0]['name']:data['data'][0]['values'][0]['value'],
+           data['data'][1]['name']:data['data'][1]['values'][0]['value']}
 
 def get_top_viral(post_ids, brand):
     viral_list = []
     for post in post_ids:
         viral = get_viral_unique(post['id'], brand)
-        viral_list.append({'id':post['id'], 'viral_unique':viral, 'permalink_url':post['permalink_url']})
-    viral_list.sort(key = lambda viral:viral['viral_unique'])
+        #print(viral)
+        viral_list.append({'id':post['id'], 'viral_unique':viral['post_impressions_viral_unique'],
+                           'unique':viral['post_impressions_unique'], 'permalink_url':post['permalink_url']})
+    viral_list = list(filter(lambda x:x['viral_unique']>3000, viral_list))
+    viral_list.sort(key = lambda viral:viral['viral_unique']/viral['unique'])
     viral_list.reverse()
     return viral_list[:3]
 
