@@ -82,9 +82,9 @@ DATABASES = {
 	'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ebdb',
-        'USER': 'jzou',
+        'USER': 'rodale',
         'PASSWORD': 'rodale2016',
-        'HOST': 'aa1xjrwo2mwos9e.cilbdoiirmou.us-east-1.rds.amazonaws.com',
+        'HOST': 'aa1qbpxxufh3exf.cilbdoiirmou.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
 	}
 }   
@@ -121,7 +121,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
+USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

@@ -10,7 +10,7 @@ from library.ga_report import initialize_analyticsreporting, get_report
 import datetime
 
 @periodic_task(
-    run_every=(crontab(minute='*/15')),
+    run_every=(crontab(minute='5-55/15', hour='5-23')),
     name="fetch google data",
     ignore_result=True
 )
@@ -40,7 +40,7 @@ def fetch_google_data():
 	today = str(datetime.date.today())
 	analytics = initialize_analyticsreporting()
 	for brand, Users_model in models_map.items():
-		response = get_report(analytics, view_id[brand], '2016-07-26')
+		response = get_report(analytics, view_id[brand], today)
 		rows = response['reports'][0]['data']['rows']
 		time = datetime.datetime.strptime(rows[0]['dimensions'][0], '%Y%m%d')
 		users = {'(Other)':0, 'Direct':0, 'Email':0, 'Organic Search':0, 
@@ -57,7 +57,7 @@ def fetch_google_data():
 						Social = users['Social']).save()
 
 @periodic_task(
-    run_every=(crontab(minute='*/15')),
+    run_every=(crontab(minute='5-55/15', hour='5-23')),
     name="fetch fackbook data",
     ignore_result=True
 )
