@@ -1,9 +1,3 @@
-$( document ).ready(function() {
-    $.currData = [];  
-    get_concurrents();
-    setInterval(get_concurrents, 5000);
-});
-
 function pieAndBar(fData){
     id = '.chart_3';
     var channels = ["Search", "Social", "Direct", "Referral", "Email"];
