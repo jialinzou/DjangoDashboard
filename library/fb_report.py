@@ -11,32 +11,36 @@ def get_post_ids(brand, next_page=None):
         last_24h = dt.datetime.now() - dt.timedelta(hours = 24)
         start = str(int((last_24h-dt.datetime(1970,1,1)).total_seconds()))
         endpoint = "https://graph.facebook.com/v2.5/me/posts?"
-        fields = 'id,created_time' 
+        fields = 'id,type,permalink_url' 
         requestUrl = endpoint + 'fields='+fields + "&access_token=" + access_token[brand] + '&since=' + start
     req = request.Request(requestUrl)
     response = request.urlopen(req)
     result = json.loads(response.read().decode("utf8"))
     if 'paging' in result:
         result['data'] += get_post_ids(brand, next_page=result['paging']['next'])
-    return result['data']
+    return list(filter(lambda x: x['type'] == 'link', result['data']))
 
 def get_viral_unique(post_id, brand):
     endpoint = 'https://graph.facebook.com/v2.7/'
-    fields = '/insights/post_impressions_viral_unique'
+    fields = '/insights/post_impressions_viral_unique,post_impressions_unique'
     requestUrl = endpoint + post_id + fields + '?access_token=' + access_token[brand]
     req = request.Request(requestUrl)
     response = request.urlopen(req)
     data = json.loads(response.read().decode("utf8"))    
-    return data['data'][0]['values'][0]['value']
+    return {data['data'][0]['name']:data['data'][0]['values'][0]['value'],
+           data['data'][1]['name']:data['data'][1]['values'][0]['value']}
 
 def get_top_viral(post_ids, brand):
     viral_list = []
     for post in post_ids:
         viral = get_viral_unique(post['id'], brand)
-        viral_list.append({'id':post['id'], 'viral_unique':viral})
-    viral_list.sort(key = lambda viral:viral['viral_unique'])
+        #print(viral)
+        viral_list.append({'id':post['id'], 'viral_unique':viral['post_impressions_viral_unique'],
+                           'unique':viral['post_impressions_unique'], 'permalink_url':post['permalink_url']})
+    viral_list = list(filter(lambda x:x['viral_unique']>3000, viral_list))
+    viral_list.sort(key = lambda viral:viral['viral_unique']/viral['unique'])
     viral_list.reverse()
-    return viral_list
+    return viral_list[:3]
 
 def get_post_details(post_id, brand):
     endpoint = 'https://graph.facebook.com/v2.7/'

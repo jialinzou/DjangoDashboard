@@ -78,28 +78,16 @@ WSGI_APPLICATION = 'dashboard.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
-if 'RDS_DB_NAME' in os.environ:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['RDS_DB_NAME'],
-            'USER': os.environ['RDS_USERNAME'],
-            'PASSWORD': os.environ['RDS_PASSWORD'],
-            'HOST': os.environ['RDS_HOSTNAME'],
-            'PORT': os.environ['RDS_PORT'],
-        }
-    }
-else:
-    DATABASES = {
-    	'default': {
+DATABASES = {
+	'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'dashboard',
-        'USER': 'postgres',
-        'PASSWORD': 'jzou',
-        'HOST': '127.0.0.1',
+        'NAME': 'ebdb',
+        'USER': 'jzou',
+        'PASSWORD': 'rodale2016',
+        'HOST': 'aa1xjrwo2mwos9e.cilbdoiirmou.us-east-1.rds.amazonaws.com',
         'PORT': '5432',
-    	}
 	}
+}   
 
 
 

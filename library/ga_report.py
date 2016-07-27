@@ -33,7 +33,7 @@ def initialize_analyticsreporting():
   return analytics
 
 
-def get_report(analytics, VIEW_ID = '124431303', time = 'today'): # defualt view: rodale network
+def get_report(analytics, VIEW_ID = '116151777', time = 'today'):
   # Use the Analytics Service Object to query the Analytics Reporting API V4.
   return analytics.reports().batchGet(
       body={
