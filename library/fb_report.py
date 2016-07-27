@@ -37,7 +37,11 @@ def get_top_viral(post_ids, brand):
         #print(viral)
         viral_list.append({'id':post['id'], 'viral_unique':viral['post_impressions_viral_unique'],
                            'unique':viral['post_impressions_unique'], 'permalink_url':post['permalink_url']})
+<<<<<<< HEAD
     viral_list = list(filter(lambda x:x['viral_unique']>3000, viral_list))
+=======
+    viral_list = list(filter(lambda x:x['viral_unique']>1000, viral_list))
+>>>>>>> 757c89056cfd99f45a7d43b2fc8097482e4df8bd
     viral_list.sort(key = lambda viral:viral['viral_unique']/viral['unique'])
     viral_list.reverse()
     return viral_list[:3]
