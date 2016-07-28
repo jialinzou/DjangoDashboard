@@ -1,5 +1,10 @@
+$( document ).ready(function() {
+    $.currData = [];  
+    get_concurrents();
+    setInterval(get_concurrents, 5000);
+});
+
 function pieAndBar(fData){
-    id = '.chart_3';
     var channels = ["Search", "Social", "Direct", "Referral", "Email"];
     var barColor = 'steelblue';
     function segColor(c){ return {'Direct': '#dc3912',
@@ -25,11 +30,11 @@ function pieAndBar(fData){
     // function to handle histogram.
     function histoGram(fD){
         var hG={},    hGDim = {t: 60, r: 0, b: 30, l: 0};
-        hGDim.w = 360 - hGDim.l - hGDim.r, 
+        hGDim.w = 350 - hGDim.l - hGDim.r, 
         hGDim.h = 300 - hGDim.t - hGDim.b;
             
         //create svg for histogram.
-        var hGsvg = d3.select(id).append("svg")
+        var hGsvg = d3.select('.users_trend').append("svg")
             .attr("width", hGDim.w + hGDim.l + hGDim.r)
             .attr("height", hGDim.h + hGDim.t + hGDim.b).append("g")
             .attr("transform", "translate(" + hGDim.l + "," + hGDim.t + ")");
@@ -125,11 +130,11 @@ function pieAndBar(fData){
     function pieChart(pD){
         var pC ={},    pieDim ={t: 60, r: 0, b: 30, l: 0};
         pieDim.w = 250 - pieDim.l - pieDim.r, 
-        pieDim.h = 360 - pieDim.t - pieDim.b; 
+        pieDim.h = 400 - pieDim.t - pieDim.b; 
         pieDim.r = (Math.min(pieDim.w, pieDim.h) -20) / 2;
                 
         // create svg for pie chart.
-        var piesvg = d3.select(id).append("svg")
+        var piesvg = d3.select('.users_sources').append("svg")
             .attr("width", pieDim.w).attr("height", pieDim.h).append("g")
             .attr("transform", "translate("+pieDim.w/2+","+pieDim.h/2+")");
         
@@ -193,7 +198,7 @@ function pieAndBar(fData){
         var leg = {};
             
         // create table for legend.
-        var legend = d3.select(id).append("table").attr('class','legend').attr('width', '240');
+        var legend = d3.select('.users_legend').append("table").attr('class','legend').attr('width', '240');
         
         // create one row per segment.
         var tr = legend.append("tbody").selectAll("tr").data(lD).enter().append("tr");
@@ -335,9 +340,9 @@ function concurrents(cData){
     ];
     
     //d3.select('chart_3').append('circle').attr('height', 512).attr('width', 512).style('fill', 'url(#image)');
-    var concurrents = d3.select(".chart_3").append("table").attr('class','concurrents');
+    var concurrents = d3.select(".users_concurrents").append("table").attr('class','concurrents');
     // create patterns
-    var defs = d3.select('.chart_3').append('svg').attr('width', 0).attr('height', 0).append("defs")
+    var defs = d3.select('.users_concurrents').append('svg').attr('width', 0).attr('height', 0).append("defs")
     var pattern = defs.selectAll('pattern').data(logo).enter()
         .append("pattern")
         .attr("id", function(d){return 'logo-'+d.site;})
@@ -350,7 +355,7 @@ function concurrents(cData){
         .attr("xlink:href", function(d){return d.link;});
 
     // create header
-    columns = ["", "Concurrents"]; 
+    columns = ["", "Live Users"]; 
     var th = concurrents.append("thead").selectAll("th").data(columns).enter().append("th");
     th.append("text").text(function(d){return d});   
     
@@ -380,7 +385,7 @@ function updatePage(cData){
         {'site':'WE', 'link':'http://www.rodalewellness.com/sites/rodalewellness.com/themes/wellness/logo.png'}
     ];
     // create patterns
-    var defs = d3.select('.chart_3').append('svg').attr('width', 0).attr('height', 0).append("defs")
+    var defs = d3.select('.users_concurrents').append('svg').attr('width', 0).attr('height', 0).append("defs")
     var pattern = defs.selectAll('pattern').data(logo).enter()
         .append("pattern")
         .attr("id", function(d){return 'logo-'+d.site;})

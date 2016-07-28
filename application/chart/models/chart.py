@@ -96,34 +96,41 @@ class TopPages(models.Model):
 class TopPosts_WH(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_PVN(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_RW(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_BI(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_ROL(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_WE(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)
 
 class TopPosts_MH(models.Model):
     rank = models.IntegerField(primary_key = True)
     viral_unique = models.IntegerField()
+    unique = models.IntegerField(default=1000000)
     link = models.CharField(max_length=400)

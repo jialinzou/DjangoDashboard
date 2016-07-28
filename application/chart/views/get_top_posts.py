@@ -19,7 +19,8 @@ class GetTopPosts(View):
             for model in TopPosts.objects.all():
                 response.append(
     				dict(viral_unique = model.viral_unique,
+                        unique = model.unique,
                         link = model.link))
-        response.sort(key = lambda post: post['viral_unique'])
+        response.sort(key = lambda post: post['viral_unique']/post['unique'])
         response.reverse()
         return JsonResponse(response[:3], safe=False)

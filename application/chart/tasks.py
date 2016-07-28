@@ -77,5 +77,6 @@ def fetch_fb_data():
 		for i, post in enumerate(top3):
 			rank = i+1
 			viral_unique = post['viral_unique']
+			unique = post['unique']
 			link = post['permalink_url']
-			TopPosts(rank = rank, viral_unique = viral_unique, link = link).save()
+			TopPosts(rank = rank, viral_unique = viral_unique, unique = unique, link = link).save()
